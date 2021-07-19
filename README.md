@@ -49,3 +49,52 @@ texi2any (GNU texinfo) 6.7
 xz (XZ Utils) 5.2.4
 g++ compilation OK
 ```
+
+## Create LFS partitions
+
+Section 2.4 states guidelines to create LFS partitions.
+
+Using `fsdisk`, we can see the current disk state:
+
+```
+# As root
+$ fdisk /dev/sda
+...
+
+Command (m for help): p
+Disk /dev/sda: 931,53 GiB, 1000204886016 bytes, 1953525168 sectors
+Disk model: ST1000LM024 HN-M
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 4096 bytes
+I/O size (minimum/optimal): 4096 bytes / 4096 bytes
+Disklabel type: gpt
+Disk identifier: 81D78C68-836D-4653-8C78-ED4F887F1701
+
+Device       Start        End    Sectors  Size Type
+/dev/sda1     2048     999423     997376  487M EFI System
+/dev/sda2   999424    1001471       2048    1M BIOS boot
+/dev/sda3  1001472    2052095    1050624  513M Microsoft basic data
+/dev/sda4  2052096 1172272799 1170220704  558G Linux filesystem
+```
+
+We have also unpartitioned space:
+
+```
+Command (m for help): F
+
+Unpartitioned space /dev/sda: 372,54 GiB, 400001015296 bytes, 781251983 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (loCommand (m for help): F
+
+Unpartitioned space /dev/sda: 372,54 GiB, 400001015296 bytes, 781251983 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 4096 bytes
+
+     Start        End   Sectors   Size
+1172273152 1953525134 781251983 372,5Ggical/physical): 512 bytes / 4096 bytes
+
+     Start        End   Sectors   Size
+1172273152 1953525134 781251983 372,5G
+```
+
+We do not create any EFI partition, since the driver is the same from the host system. Thus, we use the same partition table.
