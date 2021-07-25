@@ -159,3 +159,14 @@ The mapping intended is:
 - `/dev/sda12` for `/`;
 - `/dev/sda13` for `/home`;
 - `/dev/sda18` for swap.
+
+## Create filesystem
+
+Section 2.5 shows hwo to create the filesystem to the aforementioned partitions (in the case os swap, simply "turn on"):
+
+```
+$ mkfs -v -t ext4 /dev/sda11
+$ mkfs -v -t ext4 /dev/sda12
+$ mkfs -v -t ext4 /dev/sda13
+$ mkswap /dev/sda18
+```
