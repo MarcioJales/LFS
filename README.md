@@ -98,3 +98,64 @@ Sector size (logical/physical): 512 bytes / 4096 bytes
 ```
 
 We do not create any EFI partition, since the driver is the same from the host system. Thus, we use the same partition table.
+
+Finally, partitions were created as below:
+
+```
+Command (m for help): n       
+Partition number (5-128, default 5): 11
+First sector (1172272800-1953525134, default 1172273152): 
+Last sector, +/-sectors or +/-size{K,M,G,T,P} (1172273152-1953525134, default 1953525134): +1G
+
+Created a new partition 11 of type 'Linux filesystem' and of size 1 GiB.
+
+Command (m for help): n
+Partition number (5-10,12-128, default 5): 18
+First sector (1174370304-1953525134, default 1174370304): 
+Last sector, +/-sectors or +/-size{K,M,G,T,P} (1174370304-1953525134, default 1953525134): +8G
+
+Created a new partition 18 of type 'Linux filesystem' and of size 8 GiB.
+
+Command (m for help): n
+Partition number (5-10,12-17,19-128, default 5): 12
+First sector (1191147520-1953525134, default 1191147520): 
+Last sector, +/-sectors or +/-size{K,M,G,T,P} (1191147520-1953525134, default 1953525134): +200G
+
+Created a new partition 12 of type 'Linux filesystem' and of size 200 GiB.
+
+Command (m for help): n
+Partition number (5-10,13-17,19-128, default 5): 13
+First sector (1610577920-1953525134, default 1610577920): 
+Last sector, +/-sectors or +/-size{K,M,G,T,P} (1610577920-1953525134, default 1953525134): 
+
+Created a new partition 13 of type 'Linux filesystem' and of size 163,5 GiB.
+
+Command (m for help): t
+Partition number (1-4,11-13,18, default 18): 18
+Partition type (type L to list all types): 19
+
+Changed type of partition 'Linux filesystem' to 'Linux swap'.
+```
+
+We may check the partitions:
+
+```
+# fdisk -l /dev/sda
+Disk /dev/sda: 931,53 GiB, 1000204886016 bytes, 1953525168 sectors
+...
+
+Device          Start        End    Sectors   Size Type
+...
+/dev/sda11 1172273152 1174370303    2097152     1G Linux filesystem
+/dev/sda12 1191147520 1610577919  419430400   200G Linux filesystem
+/dev/sda13 1610577920 1953525134  342947215 163,5G Linux filesystem
+/dev/sda18 1174370304 1191147519   16777216     8G Linux swap
+```
+
+The mapping intended is:
+
+
+- `/dev/sda11` for `/boot`;
+- `/dev/sda12` for `/`;
+- `/dev/sda13` for `/home`;
+- `/dev/sda18` for swap.
